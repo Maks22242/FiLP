@@ -1,1 +1,22 @@
 
+(*Предыдущую программу реализовать в функции main с
+помощью только оператора суперпозиции, потом только с помощью
+оператора каррирования.*)
+
+let F a = 
+   match a with
+   | "F#" -> printfn"Подлиза"
+   | "Prolog" -> printfn"Подлиза"
+   | a ->printfn "Не подлиза"
+
+[<EntryPoint>]
+let main argv =
+    printfn "Ваш любимый язык программирования?"
+    let slovo = System.Console.ReadLine() 
+    printfn "Суперпозиция:"
+    printfn "%s" (if(slovo = "F#"||slovo = "Prolog") then "Подлиза" 
+                  else "Круто") 
+    printfn"Каррирование: "
+    slovo|>F
+    0
+
