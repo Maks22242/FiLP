@@ -1,0 +1,41 @@
+(*Задание 13 Написать функции произведение цифр числа, минимальная и
+максимальная цифра с использованием рекурсии вверх и с
+использованием хвостовой рекурсии.*)
+open System
+
+
+let rec multup a =
+    match a with
+    | 0->1
+    | a -> (a%10)*multup(a/10)
+
+let rec maxup a n = 
+    match a with
+    | a when a=0 -> n
+    | a when a%10>n -> maxup (a/10) (a%10)
+    | a when a%10<n -> maxup (a/10) n
+    
+let rec minup a n = 
+    match a with
+    | a when a=0 -> n
+    | a when a%10<n -> minup (a/10) (a%10)
+    | a when a%10>n -> minup (a/10) n
+
+let rec multrc x a =
+    match x with
+    | x when x= 0-> a
+    | x->multrc (x/10) (a*x%10)
+
+let rec multdown x = multrc x 1
+
+[<EntryPoint>]
+let main argv =
+    let x = 123
+    printfn "Рекурсия вверх"
+    printfn"%d" (multup x)
+    printfn "%d"(maxup x 0)
+    printfn "%d"(minup x 9)
+    printfn "Рекурсия вниз"
+    printfn"%d"(multdown x)
+
+    0
