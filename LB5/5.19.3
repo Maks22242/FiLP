@@ -1,0 +1,30 @@
+open System
+(*«Работа с числами».
+Модифицировать функции из
+предыдущего задания с использованием функций, построенных в
+заданиях 1 — 17 Выполнить максимально-возможное разделение на
+функции. Придерживаться принципа чистых функций, корректно
+именовать все выделенные функции.*)
+
+// метод 3
+let rec UnFunMult_Divid (a) = 
+    let rec UnFinSun_Digits(a:int) = //Сумма цифр
+        let rec Sum_Digits (a:int,init:int,beg:int):int = 
+            match beg with
+            | 0 when a=0 ->init
+            | beg -> Sum_Digits(a/10,init+beg,a%10)
+        Sum_Digits(a,0,0)
+    let rec Mult_Divid (a:int,init:int,beg:int):int =
+        match a with
+        | a when beg>a/2->init
+        | a when ((a%beg=0)&&(UnFinSun_Digits(a)<UnFinSun_Digits(beg))) -> Mult_Divid(a,init*beg,beg+1)
+        | a-> Mult_Divid(a,init,beg+1)   
+    
+    Mult_Divid(a,1,1)
+ 
+[<EntryPoint>]
+let main argv =
+   printfn"Ведите число:"
+   let a = System.Convert.ToInt32(Console.ReadLine())
+   printfn $"Прозведение таких делителей числа {a}, сумма цифр которых меньше, чем сумма цифр исходного числа: {UnFunMult_Divid(a)} "    
+   0
