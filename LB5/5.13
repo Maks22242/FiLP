@@ -9,33 +9,82 @@ let rec multup a =
     | 0->1
     | a -> (a%10)*multup(a/10)
 
-let rec maxup a n = 
-    match a with
-    | a when a=0 -> n
-    | a when a%10>n -> maxup (a/10) (a%10)
-    | a when a%10<n -> maxup (a/10) n
+
+
+let rec MaxUp a = 
+    match a with 
+    | a when a<>0->
+        let a1 = MaxUp (a/10)
+        match a1 with
+        | _ when a%10>a1 -> a%10
+        | a1-> a1
+    | a->0
     
+
+let rec MinUp a = 
+    match a with 
+    | a when a<>0->
+        let a1 = MinUp (a/10)
+        match a1 with
+        | _ when a%10<a1 -> a%10
+        | a1-> a1
+    | a->9
+
 let rec minup a n = 
     match a with
     | a when a=0 -> n
     | a when a%10<n -> minup (a/10) (a%10)
     | a when a%10>n -> minup (a/10) n
 
-let rec multrc x a =
-    match x with
-    | x when x= 0-> a
-    | x->multrc (x/10) (a*x%10)
 
-let rec multdown x = multrc x 1
+
+let rec multdown x = 
+    let rec multrc x a =
+        match x with
+        | x when x= 0-> a
+        | x->
+           
+           let x1 = x/10
+           let a1 = a*x%10
+           multrc x1 a1
+    multrc x 1
+
+let rec MinDown x =
+    let rec mindown a n = 
+        match a with
+        | a when a=0 -> n
+        | a when a%10<n ->
+            let a1 =a/10
+            let a2 = a%10
+            mindown a1 a2
+        | a ->
+            let  a1 = a/10            
+            mindown a1 n
+    mindown  x 9
+
+
+let rec MaxDown x =
+     let rec maxdown a n = 
+         match a with
+         | a when a=0 -> n
+         | a when a%10>n ->
+             let a1 =a/10
+             let a2 = a%10
+             maxdown a1 a2
+         | a ->
+             let  a1 = a/10
+             maxdown a1 n
+     maxdown  x 0
 
 [<EntryPoint>]
 let main argv =
-    let x = 123
+    let x = 1523
     printfn "Рекурсия вверх"
     printfn"%d" (multup x)
-    printfn "%d"(maxup x 0)
-    printfn "%d"(minup x 9)
+    printfn "%d"(MaxUp x)
+    printfn "%d"(MinUp x )
     printfn "Рекурсия вниз"
-    printfn"%d"(multdown x)
-
+    printfn" Произведение цифр числа %d"(multdown x)
+    printfn $"Минимальная цифра числа {MinDown x}"
+    printfn $"Макксимальное цифра числа {MaxDown x}"
     0
