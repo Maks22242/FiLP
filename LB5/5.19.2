@@ -1,0 +1,23 @@
+open System
+(*«Работа с числами».
+Модифицировать функции из
+предыдущего задания с использованием функций, построенных в
+заданиях 1 — 17 Выполнить максимально-возможное разделение на
+функции. Придерживаться принципа чистых функций, корректно
+именовать все выделенные функции.*)
+
+ //метод 2
+let rec UnFunOdd (a:int):int  = 
+    let rec Odd_rec (a:int,init:int,beg:int):int =
+        match beg with
+        | 0 when a=0-> init
+        | beg when ((beg%2=1)&&(beg>3)) ->Odd_rec(a/10,init+1,a%10)
+        | beg->Odd_rec(a/10,init,a%10)
+    Odd_rec(a/10,0,a%10)
+    
+[<EntryPoint>]
+let main argv =
+   printfn"Ведите число:"
+   let a = System.Convert.ToInt32(Console.ReadLine())
+   printfn $"Количество нечётных цифр числа {a}, больших 3:{UnFunOdd(a)}"
+  0
