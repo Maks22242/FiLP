@@ -1,0 +1,29 @@
+open System
+(*«Работа с числами».
+Модифицировать функции из
+предыдущего задания с использованием функций, построенных в
+заданиях 1 — 17 Выполнить максимально-возможное разделение на
+функции. Придерживаться принципа чистых функций, корректно
+именовать все выделенные функции.*)
+
+//Голова рекурсии 1
+let UnFunDivid (a:int,init:int,func:int->int->int):int =
+    let rec sum_Divider (a:int,c:int,beg:int):int =
+        match beg with
+        | beg when beg>a/2 -> c
+        | beg when a%beg=0 -> sum_Divider(a,c+beg,beg+1) 
+        | beg -> sum_Divider(a,c,beg+1)
+    // Сумма простых делителей числа
+    let rec Divid_rec (a:int,init:int,beg:int,func: int->int->int):int = 
+        match beg with
+        | beg when beg>a/2 -> init
+        | beg when ((a%beg=0)&&(sum_Divider(beg,0,2)=0)) -> Divid_rec(a, func init beg ,beg+1,func)
+        | beg -> Divid_rec(a,init ,beg+1,func)
+    Divid_rec(a,init,1,func) 
+    
+    [<EntryPoint>]
+let main argv =
+   printfn"Ведите число:"
+   let a = System.Convert.ToInt32(Console.ReadLine())
+   printfn $"Сумма простых делителей числа {a}: {UnFunDivid(a,0,fun a b -> a+b)}"
+ 
