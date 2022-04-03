@@ -1,0 +1,65 @@
+open System
+(*Напишите программу, в которой пользователь вводит кортеж
+из двух чисел, где первое число это номер одной из трех функций вашего
+варианта, второе число аргумент этой функции. Построить функцию,
+которая принимает номер от 1 до 3 и возвращает одну из трех
+написанных функций. Далее программа выполняет указанную функцию
+и выдает результат на экран. Для реализации функции main использовать
+только оператор каррирования, потом только оператор суперпозиции.*)
+
+//метод 1
+let UnFunDivid (a:int):int =
+    let rec sum_Divider (a:int,c:int,beg:int):int =
+        match beg with
+        | beg when beg>a/2 ->  c
+        | beg when a%beg=0 -> sum_Divider(a,c+beg,beg+1) 
+        | beg -> sum_Divider(a,c,beg+1)
+    // Сумма простых делителей числа
+    let rec Divid_rec (a:int,init:int,beg:int):int = 
+        match beg with
+        | beg when beg>a/2 -> init
+        | beg when ((a%beg=0)&&(sum_Divider(beg,0,2)=0)) -> Divid_rec(a,(init+beg),beg+1)
+        | beg -> Divid_rec(a,init ,beg+1)
+    Divid_rec(a,0,1) 
+
+
+ //метод 2
+let rec UnFunOdd (a:int):int  = 
+    let rec Odd_rec (a:int,init:int,beg:int):int =
+        match beg with
+        | 0 when a=0-> init
+        | beg when ((beg%2=1)&&(beg>3)) ->Odd_rec(a/10,init+1,a%10)
+        | beg->Odd_rec(a/10,init,a%10)
+    Odd_rec(a/10,0,a%10)
+ 
+ // метод 3
+let rec UnFunMult_Divid (a) = 
+    let rec UnFinSun_Digits(a:int) = //Сумма цифр
+        let rec Sum_Digits (a:int,init:int,beg:int):int = 
+            match beg with
+            | 0 when a=0 ->init
+            | beg -> Sum_Digits(a/10,init+beg,a%10)
+        Sum_Digits(a,0,0)
+    let rec Mult_Divid (a:int,init:int,beg:int):int =
+        match a with
+        | a when beg>a/2->init
+        | a when ((a%beg=0)&&(UnFinSun_Digits(a)<UnFinSun_Digits(beg))) -> Mult_Divid(a,init*beg,beg+1)
+        | a-> Mult_Divid(a,init,beg+1)   
+    
+    Mult_Divid(a,1,1)
+
+
+let select_fun = function
+    | 1->UnFunDivid
+    |2-> UnFunOdd
+    |_-> UnFunMult_Divid
+
+
+
+[<EntryPoint>]
+let main argv =
+   printfn"Введите номер функции и число"
+   let x = (System.Convert.ToInt32(System.Console.ReadLine()),System.Convert.ToInt32(System.Console.ReadLine()))
+   let result = select_fun (fst x)
+   printfn $"Та Дам {result (snd x)}"
+   0
