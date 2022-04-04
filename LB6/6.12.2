@@ -1,0 +1,47 @@
+(*Дан целочисленный массив. Необходимо найти индекс
+минимального элемента.*)
+
+let rec readList n = 
+    match n with
+       | 0-> []
+       | _ -> 
+          let Head = System.Convert.ToInt32(System.Console.ReadLine())
+          let Tail = readList (n-1)
+          Head::Tail
+
+// Вывод элемнмтов
+let rec writeList = function    
+    |[]->0
+    |h::tail->
+        printfn $"{h}"
+        writeList tail
+
+let Min a b = if a<b then a else b//Сравнения двух чисел для поиска максимума
+
+let Min_list list  =  //Функция ищет минимальный элемент списка. Если список пуст возвращает 0
+    let rec Min_list_rec list (func:int->int->int) min = 
+        match list with 
+        | []->min
+        | h::t-> Min_list_rec t func (func h min)
+    match list with
+    |[]->0
+    |h::t->Min_list_rec t Min h
+
+let index_Min list =
+    let rec index_Min_rec list min beg  = 
+        match list with
+        | h::t when h=min-> beg
+        | h::t->
+            let beg1 = beg+1
+            index_Min_rec t min beg1
+    index_Min_rec list (Min_list list) 1
+
+            
+
+[<EntryPoint>]
+let main argv =
+    printfn $"Введите количество элементов"
+    let list = readList (System.Convert.ToInt32(System.Console.ReadLine()))
+    let ind_min = index_Min list
+    printfn $"Ответ{ind_min}"
+    0
