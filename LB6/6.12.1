@@ -1,0 +1,50 @@
+(*Дан целочисленный массив. Необходимо найти количество
+элементов, расположенных после последнего максимального.*)
+open System
+
+let rec readList n = 
+    match n with
+       | 0-> []
+       | _ -> 
+          let Head = System.Convert.ToInt32(System.Console.ReadLine())
+          let Tail = readList (n-1)
+          Head::Tail
+// Вывод элемнмтов
+let rec writeList = function    
+    |[]->0
+    |h::tail->
+        printfn $"{h}"
+        writeList tail
+
+let max a b = if a>b then a else b//Сравнения двух чисел для поиска максимума
+
+let Max_list list  =  //Функция ищет максимальный элемент списка. Если список пуст возвращает 0
+    let rec Max_list_rec list (func:int->int->int) max = 
+        match list with 
+        | []->max
+        | h::t-> Max_list_rec t func (func h max)
+    match list with
+    |[]->0
+    |h::t->Max_list_rec t max h
+ 
+//Количество элементов после максимального
+let Kol list = 
+    let rec Kol_rec list max kol =
+        match list with
+        |[]-> kol
+        |t::h->
+            match t with
+            |t when t=max  -> Kol_rec h max 0
+            |_-> 
+                let kol2=kol+1
+                Kol_rec h max kol2
+    Kol_rec list (Max_list list) 0            
+
+
+[<EntryPoint>]
+let main argv =
+    printfn $"Введите количество элементов"
+    let list = readList (System.Convert.ToInt32(System.Console.ReadLine()))
+    let kol = Kol list
+    printfn $"ответ:{kol}"
+    0
