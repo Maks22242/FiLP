@@ -1,0 +1,50 @@
+(*Дан целочисленный массив и интервал a..b. Необходимо найти
+максимальный из элементов в этом интервале.*)
+let rec readList n = 
+    match n with
+       | 0-> []
+       | _ -> 
+          let Head = System.Convert.ToInt32(System.Console.ReadLine())
+          let Tail = readList (n-1)
+          Head::Tail
+
+// Вывод элемнмтов
+let rec writeList = function    
+    |[]->0
+    |h::tail->
+        printfn $"{h}"
+        writeList tail
+let Max a b = if a>b then a else b//Сравнения двух чисел для поиска максимума
+
+let Max_list list  =  //Функция ищет минимальный элемент списка. Если список пуст возвращает 0
+    let rec Max_list_rec list (func:int->int->int) min = 
+        match list with 
+        | []->min
+        | h::t-> Max_list_rec t func (func h min)
+    match list with
+    |[]->0
+    |h::t->Max_list_rec t Max h
+
+//Функция выводит из списка заданный интервал
+let prog list inter = 
+    let rec prog_rec list inter beg new_list =
+        match list with
+        |list when beg>(snd inter)-> Max_list new_list
+        |h::t when ((beg>(fst inter))&&(beg<(snd inter))) -> 
+            let new_list1 = new_list@[h]
+            let beg1 = beg+1
+            prog_rec t inter beg1 new_list1
+        |h::t-> 
+            let beg1 = beg+1
+            prog_rec t inter beg1 new_list
+    prog_rec list inter 1 [] 
+
+[<EntryPoint>]
+let main argv =
+    printfn $"Введите количество элементов"
+    let list = readList (System.Convert.ToInt32(System.Console.ReadLine()))
+    printfn $"Введите интервал [a;b] для поиска максимального"
+    let inter = ((System.Convert.ToInt32(System.Console.ReadLine())),(System.Convert.ToInt32(System.Console.ReadLine())))
+    let max = prog list inter
+    printfn $"Максимум {max}"
+    0 
