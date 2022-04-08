@@ -1,0 +1,61 @@
+(*Дан целочисленный массив. Вывести индексы элементов, которые
+меньше своего левого соседа, и количество таких чисел.*)
+let rec readList n = 
+    match n with
+       | 0-> []
+       | _ -> 
+          let Head = System.Convert.ToInt32(System.Console.ReadLine())
+          let Tail = readList (n-1)
+          Head::Tail
+
+// Вывод элемнмтов
+let rec writeList = function    
+    |[]->0
+    |h::tail->
+        printfn $"{h}"
+        writeList tail
+
+let Max a b = if a>b then a else b//Сравнения двух чисел для поиска максимума
+
+let Max_list list  =  //Функция ищет минимальный элемент списка. Если список пуст возвращает 0
+    let rec Max_list_rec list (func:int->int->int) min = 
+        match list with 
+        | []->min
+        | h::t-> Max_list_rec t func (func h min)
+    match list with
+    |[]->0
+    |h::t->Max_list_rec t Max h
+
+let Program list =
+    let rec Progrm_rec list pred list_index beg =
+        match list with
+        |[]->list_index
+        |h::t when h<pred -> 
+            let new_list_index = list_index@[beg]
+            let beg1 = beg+1
+            Progrm_rec t h new_list_index beg1
+        |h::t->
+             let beg1 = beg+1
+             Progrm_rec t h list_index beg1
+    match list with
+    |h::t-> Progrm_rec t h [] 1
+    
+let  Length list = 
+    let rec Length_rec list kol =
+        match list with
+        | []->kol
+        | h::t->
+            let kol1 = kol+1
+            Length_rec t kol1
+    Length_rec list 0
+
+
+[<EntryPoint>]
+let main argv =
+    printfn $"Введите количество элементов"
+    let list = readList (System.Convert.ToInt32(System.Console.ReadLine()))
+    let new_lst = Program list
+    printfn $"Количество чисел {Length new_lst}"
+    printfn"Идексы: "
+    writeList new_lst
+    0
