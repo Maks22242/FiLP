@@ -1,0 +1,49 @@
+(*Дан список. Построить новый список из квадратов
+неотрицательных чисел, меньших 100 и встречающихся в массиве
+больше 2 раз.*)
+
+let rec readList n = 
+    match n with
+       | 0-> []
+       | _ -> 
+          let Head = System.Convert.ToInt32(System.Console.ReadLine())
+          let Tail = readList (n-1)
+          Head::Tail
+
+// Вывод элемнмтов
+let rec writeList = function    
+    |[]->0
+    |h::tail->
+        printfn $"{h}"
+        writeList tail
+
+let List_povtor list h =
+    let rec rec_List_povtor list h1 pov =
+        match list with
+        |[]->pov
+        |h::tail->
+            let pov1 = if h1=h then pov+1 else pov
+            rec_List_povtor tail h1 pov1
+    rec_List_povtor list h 1
+    
+let Program list =
+     let rec Program_rec list new_list=
+         match list with
+         |[]->new_list
+         |h::t when (h>0 && h<100 && (List_povtor list h)>2) -> 
+              let new_el = h*h
+              let new_new_list = new_list@[new_el]
+              Program_rec t new_new_list
+         |h::t -> Program_rec t new_list
+     Program_rec list []
+
+
+
+[<EntryPoint>]
+let main argv =
+    printfn $"Введите количество элементов"
+    let list = readList (System.Convert.ToInt32(System.Console.ReadLine()))
+    printfn "Новый список:" 
+    printfn $"{Program list|>writeList}"
+    
+    0 // return an integer exit code
