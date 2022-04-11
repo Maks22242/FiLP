@@ -1,0 +1,26 @@
+(*Дан целочисленный массив. Необходимо найти количество
+элементов, расположенных после последнего максимального.*)
+let rec readList n = 
+    match n with
+       | 0-> []
+       | _ -> 
+          let Head = System.Convert.ToInt32(System.Console.ReadLine())
+          let Tail = readList (n-1)
+          Head::Tail
+// Вывод элемнмтов
+let rec writeList = function    
+    |[]->0
+    |h::tail->
+        printfn $"{h}"
+        writeList tail
+ 
+//Количество элементов после максимального
+let Fun list = List.length list - (List.findIndexBack (fun x -> x = (List.max list)) list)-1 // Функция вычитает из общей длины списка индекс последнего максимального элемента списка и 1 
+
+
+[<EntryPoint>]
+let main argv =
+    printfn $"Введите количество элементов"
+    let list = readList (System.Convert.ToInt32(System.Console.ReadLine()))    
+    printfn $"ответ:{list|>Fun}"
+    0
