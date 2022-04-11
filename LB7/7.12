@@ -1,0 +1,24 @@
+(*Дан целочисленный массив, в котором лишь один элемент
+отличается от остальных. Необходимо найти значение этого элемента.*)
+let rec readList n = 
+    match n with
+       | 0-> []
+       | _ -> 
+          let Head = System.Convert.ToInt32(System.Console.ReadLine())
+          let Tail = readList (n-1)
+          Head::Tail
+// Вывод элемнмтов
+let rec writeList = function    
+    |[]->0
+    |h::tail->
+        printfn $"{h}"
+        writeList tail
+
+let Fun list = List.find(fun x->List.length(List.filter(fun y->y=x)list)=1)list
+
+[<EntryPoint>]
+let main argv =
+    printfn $"Введите количество элементов"
+    let list = readList (System.Convert.ToInt32(System.Console.ReadLine()))    
+    printfn $"ответ:{list|>Fun}"
+    0
