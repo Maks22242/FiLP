@@ -1,0 +1,11 @@
+Вариант № 1 Построить предикат father(X, Y), который проверяет,
+является ли X отцом Y. Построить предикат, father(X), который выводит
+отца X.
+
+?- parent()
+% c:/users/максим/documents/prolog/lb11 compiled 0.00 sec, -1 clauses
+?- father(X,ratibor).
+X = voeneg .
+
+?- father(voeneg,ratibor).
+true 
