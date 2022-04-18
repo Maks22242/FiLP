@@ -1,0 +1,17 @@
+//1 В порядке увеличения разницы между средним количеством согласных и средним количеством гласных букв в строке
+
+let raz List = 
+    let rec rec_raz list new_List = 
+        match list with 
+        |[]->new_List
+        |str::tail ->
+             let razn = (String.length str)/(String.length(String.filter(fun x->x='a'||x='e'||x='y'||x='u'||x='o'||x='i')str))-(String.length str)/(String.length(String.filter(fun x->x<>'a'||x<>'e'||x<>'y'||x<>'u'||x<>'o'||x<>'i')str)) //разницa между средним количеством согласных и средним количеством гласных букв в строке
+             let new_list1 = new_List @[(str,razn)]
+             rec_raz tail new_list1
+    rec_raz List []
+
+
+let sortList list =
+     let new_list =List.sort (raz list)
+     let List = List.map(fun x->fst(x))new_list
+     List
