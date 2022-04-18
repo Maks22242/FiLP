@@ -1,0 +1,12 @@
+let findMedian list = List.item ((List.length list)/2) (List.sort list)
+
+let sortMedian list = 
+    let rec sort list sortList =
+        match list with
+        |[]->sortList
+        |_ ->
+            let nowMed = findMedian list
+            let indMed =List.findIndex (fun x->x=nowMed) list
+            let newList = List.filter (fun x -> x<>indMed) list
+            sort newList (sortList @ [nowMed])
+    sort list []
