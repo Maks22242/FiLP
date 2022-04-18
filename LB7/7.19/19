@@ -1,0 +1,68 @@
+open System
+
+//1.Дана строка.Необходимо найти общее количество русских символов.
+
+let NumberOfRuschar str = 
+    let res1 = String.length(String.filter (fun x -> x>='А' && x<='я') str)
+    Console.WriteLine("Количество русских символов в строке: {0}",res1)
+
+  
+//9.Дана строка.Необходимо проверить образуют ли строчные символы латиницы палиндром.
+
+let CheckForPolindrom str = 
+    let newstr  = String.filter (fun x -> x>= 'a' && x <= 'z') str
+    let rec checkPolind str check = 
+        match str with
+        | ""-> Console.WriteLine("Палиндром !")
+        | _ when check = 0->  Console.WriteLine("Не палиндром !")        
+        | _-> 
+            if str.[0] = str.[str.Length-1] then checkPolind str.[1..(str.Length-2)] 1
+            else  checkPolind str 0
+    Convert.ToString(checkPolind newstr 1)
+
+
+
+//18.Найти в тексте даты формата «день.месяц.год».
+
+let Date (str:string)= 
+    let day = str.Remove(2,8)
+    let month = str.Remove(0,3).Remove(2,5)
+    let year = str.Remove(0,6)
+    day<="31"&&day>="01" && month>="01"&& month<="12" && year >"0000" && year<"9999"
+
+let FindData (str:string) = 
+    let rec finddate (stroka:string) (strNow: string) (strResult: string) = 
+        match stroka with
+        |"" -> strResult
+        |_-> 
+            let newStroka = 
+                if strNow.Length<10 then
+                    strNow + stroka.Remove(1,stroka.Length-1)
+                else strNow.Remove(0,1)+(stroka.Remove(1,stroka.Length-1))
+            let newResult = 
+                if (newStroka.Length = 10 && Date newStroka) then strResult+"\n"+newStroka
+                else strResult
+            finddate (stroka.Remove(0,1)) newStroka newResult
+    if finddate str "" "" = "" then "В тексте дат нет" else finddate str "" ""
+    Console.WriteLine("Искомая дата:{0}",finddate str "" "")
+
+
+let FunctionSelection n str  = 
+    match n with 
+    |1 -> Convert.ToString(NumberOfRuschar str)
+    |2 -> CheckForPolindrom str
+    |3 -> Convert.ToString(FindData str)
+    
+ 
+[<EntryPoint>]
+let main argv =
+    Console.WriteLine("Введите строку: ")
+    let str = Console.ReadLine()
+    Console.WriteLine("Введите номер функции:
+     1 - поиск общего количество русских символов 
+     2 - проверка на паллиндром
+     3 - поиск даты определенного формата в тексте
+     ")
+    let n = Console.ReadLine() |> Convert.ToInt32
+    FunctionSelection n str  
+    0 
