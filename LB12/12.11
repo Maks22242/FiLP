@@ -1,1 +1,38 @@
 
+
+% 1. Найти сумму простых делителей числа.
+
+% количество делителей для простоты
+
+kol_del(X,Y):-  kol_del(X,Y,1).
+kol_del(X,0,X):-!.
+kol_del(X,Y,I):-  X mod I =:=0, I1 is I+1, kol_del(X,Y1,I1),Y is Y1+I.
+kol_del(X,Y,I):-  I1 is I+1, kol_del(X,Y1,I1),Y is Y1.
+
+
+
+
+
+% рекурсия вверх
+
+sum_prost_del_up(X,Y):- sum_prost_del_up(X,Y,1).
+
+sum_prost_del_up(X,0,X):-  !.
+
+sum_prost_del_up(X,Y,I):-(X mod I) =:=  0, kol_del(I,Z),Z=:=1,
+                                     I1 is I+1,sum_prost_del_up(X,Y1,I1), Y  is Y1+I.
+
+sum_prost_del_up(X,Y,I):- I1 is I+1, sum_prost_del_up(X,Y1,I1), Y  is Y1.
+
+% рекурсия вниз
+
+sum_prost_del_down(X,Y):- sum_prost_del_down(X,Y,0,1).
+
+sum_prost_del_down(X,Y,Acc,X):- Y is Acc,!.
+
+sum_prost_del_down(X,Y,Acc,I):-I<X, X mod I=:= 0,kol_del(I,Z),Z=:=1,
+                                I1 is I+1,Acc1 is  Acc+I,sum_prost_del_down(X,Y,Acc1,I1).
+
+sum_prost_del_down(X,Y,Acc,I):- I<X, I1 is I+1,sum_prost_del_down(X,Y,Acc,I1).
+
+
