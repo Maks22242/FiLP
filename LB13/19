@@ -1,0 +1,42 @@
+Задание 19 Три друга заняли первое, второе, третье места в соревнова-
+ниях универсиады. Друзья разной национальности, зовут их по-разному, и лю-
+бят они разные виды спорта. Майкл предпочитает баскетбол и играет лучше,
+чем американец. Израильтянин Саймон играет лучше теннисиста. Игрок в кри-
+кет занял первое место. Кто является австралийцем? Каким спортом увлека-
+ется Ричард?
+
+%проверка на уникальность
+belongs(X,[X|_]).
+belongs(X,[_|T]):-belongs(X,T).
+
+unique([]).
+unique([H|T]):- not(belongs(H,T)),unique(T).
+solve(Mans):-
+  Mans = [man(X, XNat, XSp, XP), man(Y, YNat, YSp, YP), man(Z, ZNat, ZSp, ZP)],
+
+  name(X), name(Y), name(Z), unique([X, Y, Z]),
+  nation(XNat), nation(YNat), nation(ZNat), unique([XNat, YNat, ZNat]),
+  sport(XSp), sport(YSp), sport(ZSp), unique([XSp, YSp, ZSp]),
+  prize(XP), prize(YP), prize(ZP), unique([XP, YP, ZP]),
+
+  % Майкл играет в баскетбол
+  member(man(mikl, _, basketball, MiklPos), Mans),
+
+  % Майкл играет лучше чем американец
+  member(man(_, american, _, AmerPos), Mans), MiklPos < AmerPos,
+
+  % Саймон - израильтянин
+  member(man(saimon, israeli, _, SaimonPos), Mans),
+
+  % Саймон играет лучше теннисиста
+  member(man(_, _, tennis, TennPos), Mans), SaimonPos < TennPos,
+
+  % игрок в крикет занят первое место
+  member(man(_, _, cricket, 1), Mans).
+
+start(Solve):-
+  solve(Solve), Solve = [man(_, _, _, 1), man(_, _, _, 2), man(_, _, _, 3)].
+
+
+
+
