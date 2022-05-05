@@ -1,0 +1,59 @@
+
+%Вариант 1 Как то раз случай свёл в купе астронома, поэта, прозаика и
+%драматурга. Это были Алексеев, Борисов, Константинов и Дмитриев. Оказа-
+% лось, что каждый из них взял с собой книгу написанную одним из
+% пассажиров
+% этого купе. Алексеев и Борисов углубились в чтение предварительно
+% обменяв-
+%шись книгами. Поэт читал пьесу, прозаик — очень молодой человек, выпу-
+% стивший свою книгу, говорил что он никогда и ни чего не читал по
+% астроно-
+%мии. Борисов купил одно из произведений Дмитриева. Никто из пассажиров
+%не читал свои книги. Что читал каждый из них, кто кем был?
+
+man(alekseev).
+man(borisov).
+man(konstantinov).
+man(dmitriev).
+
+writebook(astronomy).
+writebook(poetry).
+writebook(prose).
+writebook(piece).
+
+
+check([]):-!.
+check([passenger(_, XRead, XBuy, XWrite)|T]):-
+  !, not(XRead = XWrite), not(XBuy = XWrite), check(T).
+
+solve(Solve):-
+  Solve = [passenger(X, XRead, XBuy, XWrite), passenger(Y, YRead, YBuy, YWrite),
+          passenger(Z, ZRead, ZBuy, ZWrite), passenger(W, WRead, WBuy, WWrite)],
+  % 4 разных пасажира
+  man(X), man(Y), man(Z), man(W), unique([X, Y, Z, W]),
+  % каждый написал книгу
+  writebook(XWrite), writebook(YWrite),
+  writebook(ZWrite), writebook(WWrite),
+  unique([XWrite, YWrite, ZWrite, WWrite]),
+  % каждый купил книгу
+  writebook(XBuy), writebook(YBuy),
+  writebook(ZBuy), writebook(WBuy),
+  unique([XBuy, YBuy, ZBuy, WBuy]),
+  % каждый читает книгу
+  writebook(XRead), writebook(YRead),
+  writebook(ZRead), writebook(WRead),
+  unique([XRead, YRead, ZRead, WRead]),
+ % поэт читает пьесу
+  member(passenger(_, piece, _, poetry), Solve),
+  % прозаик читает не астрономию
+  not(member(passenger(_, astronomy, _, prose), Solve)),
+  % прозаик не покупал астрономию
+  not(member(passenger(_, _, astronomy, prose), Solve)),
+  % никто не читает и не покупал свою книгу
+  check(Solve),
+  % алексеев и борисов обменялись книгами
+  member(passenger(alekseev, AlekseevRead, AlekseevBuy, _), Solve),
+  member(passenger(borisov, AlekseevBuy, AlekseevRead, _), Solve),
+  % Борисов купил произведение Дмитриева
+  member(passenger(dmitriev, _, _, DmitrievWrite), Solve),
+  member(passenger(borisov, DmitrievWrite, _, _), Solve).
